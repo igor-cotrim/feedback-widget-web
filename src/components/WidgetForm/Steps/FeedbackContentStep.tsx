@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import { ArrowLeft } from "phosphor-react"
 
 import CloseButton from "../../CloseButton"
@@ -16,8 +16,15 @@ const FeedbackContentStep = ({
   onFeedbackRestartRequested
 }: FeedbackContentStepProps) => {
   const [screenshot, setScreenshot] = useState<string | null>(null)
+  const [comment, setComment] = useState('')
 
   const feedbackTypeInfo = feedbackTypes[feedbackType]
+
+  const handleSubmitFeedback = (event: React.FormEvent) => {
+    event.preventDefault()
+
+    console.log({screenshot, comment});
+  }
 
   return (
     <>
@@ -39,7 +46,7 @@ const FeedbackContentStep = ({
         </span>
         <CloseButton />
       </header>
-      <form className="w-full my-4">
+      <form className="w-full my-4" onSubmit={handleSubmitFeedback}>
         <textarea
           className={`
             min-w-[304px] w-full min-h-[112px] text-sm placeholder-zinc-400
@@ -49,6 +56,7 @@ const FeedbackContentStep = ({
             scrollbar-thin
           `}
           placeholder="Conte com detalher o que está acontecend..."
+          onChange={(event) => setComment(event.target.value)}
         />
 
         <footer className="flex gap-2 mt-2">
@@ -58,11 +66,12 @@ const FeedbackContentStep = ({
           />
           <button
             type="submit"
+            disabled={comment.length === 0}
             className={`
               p-2 bg-brand-500 rounded-md border-transparent flex-1 flex
               justify-center items-center text-sm hover:bg-brand-300 focus:outline-none
               focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-brand-500
-              transition-colors
+              transition-colors disabled:opacity-50 disabled:hover:bg-brand-500 disabled:cursor-not-allowed
             `}
           >
             Enviar feedback
