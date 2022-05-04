@@ -9,11 +9,13 @@ import { FeedbackTypeProps } from ".."
 type FeedbackContentStepProps = {
   feedbackType: FeedbackTypeProps
   onFeedbackRestartRequested: () => void
+  onFeedbackSent: () => void
 }
 
 const FeedbackContentStep = ({
   feedbackType,
-  onFeedbackRestartRequested
+  onFeedbackRestartRequested,
+  onFeedbackSent
 }: FeedbackContentStepProps) => {
   const [screenshot, setScreenshot] = useState<string | null>(null)
   const [comment, setComment] = useState('')
@@ -24,6 +26,8 @@ const FeedbackContentStep = ({
     event.preventDefault()
 
     console.log({screenshot, comment});
+
+    onFeedbackSent()
   }
 
   return (
